@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Picachu Jump</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    background: #020926;
+}
+
+.game-board {
+    width: 100%;
+    height: 500px;
+    border-bottom: 15px solid rgb(35, 100, 35);
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    /*background: linear(#87CEEB, #E0F6FF);*/
+    background: linear-gradient(#0d2242, #E0F6FF);
+}
+
+.morcego {
+    position: absolute;
+    bottom: 40px;
+    width: 80px;
+    animation: morcego-animate 1.5s infinite linear;
+}
+.picachu {
+    position: absolute;
+    width: 150px;
+    bottom: -35px;
+}
+
+.jump {
+    animation: jump 500ms ease-out;
+}
+
+.clouds {
+    width: 400px;
+    position: absolute;
+    margin-top: 50px;
+    animation: clouds-animate 20s infinite linear;
+
+}
+
+    @keyframes clouds-animate{
+    from {
+        right: -400px;
+    }
+
+    to {
+        right:100%;
+    }
+}
+    @keyframes morcego-animate{
+    from {
+	right: -80px;
+    }
+
+    to {
+	right:100%;
+    }
+}
+
+    @keyframes jump {
+    0% {
+    bottom: 0;
+    }
+    40% {
+    bottom: 200px;
+    }
+    50% {
+    bottom: 200px;
+    }
+    60% {
+    bottom: 180px;
+    }
+    100% {
+    bottom: 0;
+    }
+}
+</style>
+</head>
+<body>
+<div class='game-board'>
+    <img src="gif/morcego.gif" class="morcego">
+    <img src="gif/zumbi.gif" class="picachu">
+    <img src="gif/clouds.png" class="clouds">
+</div>
+
+
+<script>
+const picachu = document.querySelector('.picachu');
+const morcego = document.querySelector('.morcego');
+
+const jump = () => {
+    picachu.classList.add('jump');
+
+    setTimeout(() => {
+        picachu.classList.remove('jump');
+    }, 500);
+}
+
+const loop = setInterval(() => {
+    const morcegoPosition = morcego.offsetLeft;
+    const picachuPosition = +window.getComputedStyle(picachu).bottom.replace('px','');
+
+	if (morcegoPosition <= 80 && morcegoPosition >  0 && picachuPosition <= 70) {
+        morcego.style.animation = 'none';
+        morcego.style.left = `${morcegoPosition}px`;
+	picachu.style.animation = 'none';
+        picachu.style.bottom = `${picachuPosition}px`;
+	picachu.src= 'gif/lapede-removebg-preview.png';
+	picachu.style.bottom = '-15px';
+	picachu.style.marginLeft = '20px';
+	picachu.style.width = '100px';
+	clearInterval(loop);
+    }
+
+}, 10);
+
+document.addEventListener('click', jump);
+document.addEventListener('keydown', jump);
+</script>
+</body>
+</html>
